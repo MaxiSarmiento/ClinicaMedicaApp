@@ -4,7 +4,9 @@
              Title="Mi Agenda"
              BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
 
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Padding="16" RowSpacing="12">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto"
+          Padding="16"
+          RowSpacing="12">
 
         <!-- Filtros -->
         <HorizontalStackLayout Grid.Row="0" Spacing="10">
@@ -24,11 +26,11 @@
                            IsVisible="False"
                            IsRunning="False" />
 
-        <!-- Lista ocupa TODO el espacio disponible -->
+        <!-- LISTA: en fila * (clave para que mida bien) -->
         <CollectionView Grid.Row="3"
                         x:Name="TurnosList"
                         SelectionMode="None"
-                        ItemSizingStrategy="MeasureFirstItem">
+                        ItemSizingStrategy="MeasureAllItems">
 
             <CollectionView.EmptyView>
                 <Label Text="No hay turnos en el rango."
@@ -45,22 +47,28 @@
                            CornerRadius="12"
                            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
                            BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+
                         <VerticalStackLayout Spacing="4">
+
                             <Label Text="{Binding FechaTexto}"
                                    FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
                             <Label Text="{Binding EstadoTexto}"
-                                   Opacity="0.8"
-                                   TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}"/>
+                                   Opacity="0.9"
+                                   TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}"
+                                   LineBreakMode="TailTruncation" />
+
                             <Label Text="{Binding PacienteTexto}"
                                    FontSize="12"
-                                   Opacity="0.8"
-                                   TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"/>
+                                   Opacity="0.9"
+                                   TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"
+                                   LineBreakMode="TailTruncation" />
+
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
         </CollectionView>
 
         <!-- Volver fijo abajo -->
@@ -70,7 +78,7 @@
                 BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
                 TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
                 CornerRadius="10"
-                Margin="0,0,0,8" />
-
+                Margin="0,0,0,4" />
     </Grid>
+
 </ContentPage>
