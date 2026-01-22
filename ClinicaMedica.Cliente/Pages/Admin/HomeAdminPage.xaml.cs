@@ -27,7 +27,18 @@ public partial class HomeAdminPage : ContentPage
     {
         await Shell.Current.GoToAsync("Especialidades");
     }
+    private async void OnLogout(object sender, EventArgs e)
+    {
+        SecureStorage.Remove("token");
+        SecureStorage.Remove("userId");
+        SecureStorage.Remove("rol");
 
+        // opcional compat
+        SecureStorage.Remove("jwt");
+        SecureStorage.Remove("id_usuario");
+
+        await Shell.Current.GoToAsync("Login");
+    }
     private async void OnUsuarios(object sender, EventArgs e)
         => await Shell.Current.GoToAsync("Usuarios");
 }

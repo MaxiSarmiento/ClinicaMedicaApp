@@ -17,6 +17,9 @@
 
        
         <Button Text="Usuarios" Clicked="OnUsuarios"/>
-
+        <Button Text="Cerrar sesión"
+         BackgroundColor="#444"
+         TextColor="White"
+         Clicked="OnLogout"/>
     </VerticalStackLayout>
 </ContentPage>
