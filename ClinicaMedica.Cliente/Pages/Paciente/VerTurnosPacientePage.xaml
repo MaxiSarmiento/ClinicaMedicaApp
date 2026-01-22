@@ -6,47 +6,61 @@
     Title="Mis Turnos"
     BackgroundColor="{AppThemeBinding Light='#F7F7F7', Dark='#121212'}">
 
-    <CollectionView x:Name="TurnosList"
-                    Margin="12"
-                    SelectionMode="None">
+    <Grid RowDefinitions="*,Auto">
 
-        <CollectionView.EmptyView>
-            <VerticalStackLayout Padding="20" Spacing="10">
-                <Label Text="Todavía no tenés turnos reservados."
-                       FontSize="16"
-                       TextColor="{AppThemeBinding Light='#333333', Dark='#DDDDDD'}"
-                       HorizontalOptions="Center"/>
-            </VerticalStackLayout>
-        </CollectionView.EmptyView>
+        <!-- LISTA -->
+        <CollectionView x:Name="TurnosList"
+                        Grid.Row="0"
+                        Margin="12"
+                        SelectionMode="None">
 
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame BorderColor="{AppThemeBinding Light='#DDDDDD', Dark='#333333'}"
-                       BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}"
-                       Padding="12"
-                       Margin="6"
-                       CornerRadius="12">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" Spacing="10">
+                    <Label Text="Todavía no tenés turnos reservados."
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light='#333333', Dark='#DDDDDD'}"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
 
-                    <VerticalStackLayout Spacing="6">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="{AppThemeBinding Light='#DDDDDD', Dark='#333333'}"
+                           BackgroundColor="{AppThemeBinding Light='White', Dark='#1E1E1E'}"
+                           Padding="12"
+                           Margin="6"
+                           CornerRadius="12">
 
-                        <Label Text="{Binding FechaHoraString}"
-                               FontSize="18"
-                               FontAttributes="Bold"
-                               TextColor="{AppThemeBinding Light='#111111', Dark='White'}"/>
+                        <VerticalStackLayout Spacing="6">
 
-                        <Label Text="{Binding Doctor}"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Light='#444444', Dark='#CCCCCC'}"/>
+                            <Label Text="{Binding FechaHoraString}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light='#111111', Dark='White'}"/>
 
-                        <Label Text="{Binding Estado}"
-                               FontSize="12"
-                               TextColor="{AppThemeBinding Light='#666666',  Dark='#AAAAAA'}"/>
+                            <Label Text="{Binding Doctor}"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light='#444444', Dark='#CCCCCC'}"/>
 
-                    </VerticalStackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
+                            <Label Text="{Binding Estado}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light='#666666', Dark='#AAAAAA'}"/>
 
-    </CollectionView>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!-- BOTÓN FIJO ABAJO -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+    </Grid>
 
 </ContentPage>
