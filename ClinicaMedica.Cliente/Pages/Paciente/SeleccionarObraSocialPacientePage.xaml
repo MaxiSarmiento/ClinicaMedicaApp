@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Paciente.SeleccionarObraSocialPacientePage"
+    Title="Elegir Obra Social"
+    BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#121212}">
+
+    <Grid RowDefinitions="Auto,*" Padding="16">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="Buscá tu obra social"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   TextColor="{AppThemeBinding Light=#111, Dark=#FFF}" />
+
+            <SearchBar x:Name="Search"
+                       Placeholder="Ej: OSDE, Swiss Medical..."
+                       TextChanged="OnSearchChanged" />
+
+            <ActivityIndicator x:Name="Loading"
+                               IsVisible="False"
+                               IsRunning="False" />
+        </VerticalStackLayout>
+
+        <CollectionView x:Name="List"
+                        Grid.Row="1"
+                        SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="No hay resultados."
+                       HorizontalOptions="Center"
+                       Margin="0,40,0,0"
+                       TextColor="{AppThemeBinding Light=#444, Dark=#CCC}" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12"
+                           Margin="0,8,0,0"
+                           CornerRadius="12"
+                           BorderColor="{AppThemeBinding Light=#DDD, Dark=#333}"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                            <Label Text="{Binding Nombre}"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light=#111, Dark=#FFF}" />
+                            <Button Grid.Column="1"
+                                    Text="Elegir"
+                                    Clicked="OnElegir"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="#0A68FF"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Padding="12,6"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

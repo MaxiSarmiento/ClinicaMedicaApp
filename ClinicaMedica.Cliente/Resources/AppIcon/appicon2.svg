@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+	<defs>
+		<linearGradient id="gradCross" x1="160" y1="80" x2="352" y2="432" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#21A7FF"/>
+			<stop offset="1" stop-color="#3AD48E"/>
+		</linearGradient>
+
+		<linearGradient id="gradWave" x1="96" y1="350" x2="416" y2="460" gradientUnits="userSpaceOnUse">
+			<stop offset="0" stop-color="#3AD48E"/>
+			<stop offset="1" stop-color="#1E5BFF"/>
+		</linearGradient>
+	</defs>
+
+	<!-- Cross -->
+	<path
+	  d="M224 96C224 78.3 238.3 64 256 64H256C273.7 64 288 78.3 288 96V192H368C385.7 192 400 206.3 400 224V224C400 241.7 385.7 256 368 256H288V384C288 401.7 273.7 416 256 416H256C238.3 416 224 401.7 224 384V256H144C126.3 256 112 241.7 112 224V224C112 206.3 126.3 192 144 192H224V96Z"
+	  fill="url(#gradCross)"
+	  stroke="#FFFFFF"
+	  stroke-width="14"
+	  stroke-linejoin="round"
+  />
+
+	<!-- Wave / swoosh -->
+	<path
+	  d="M92 360C150 400 214 410 260 406C320 402 368 372 420 354C432 350 445 359 440 371C429 400 389 434 324 450C247 468 160 452 96 402C86 395 83 382 86 371C88 365 90 362 92 360Z"
+	  fill="url(#gradWave)"
+	  opacity="0.95"
+  />
+
+	<!-- Small highlight wave -->
+	<path
+	  d="M108 366C166 401 225 409 266 406C316 402 360 381 406 364"
+	  stroke="#FFFFFF"
+	  stroke-width="10"
+	  stroke-linecap="round"
+	  opacity="0.85"
+  />
+</svg>

@@ -1,0 +1,64 @@
+﻿<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.BuscarPacientePage"
+    Title="Buscar Paciente"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Contenido -->
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="10">
+
+            <Entry x:Name="BuscarEntry"
+                   Placeholder="Ingrese DNI o nombre del paciente"
+                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+            <Button Text="Buscar"
+                    Clicked="OnBuscar"
+                    BackgroundColor="#1976D2"
+                    TextColor="White"
+                    CornerRadius="10" />
+
+            <CollectionView x:Name="ListaPacientes">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12"
+                               Margin="5"
+                               CornerRadius="12"
+                               BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                               BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding Nombre}"
+                                       FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+                                <Label Text="{Binding Apellido}"
+                                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+                                <Label Text="{Binding DNI}"
+                                       TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}" />
+
+                                <Button Text="Ver estudios"
+                                        CommandParameter="{Binding Id}"
+                                        Clicked="OnVerEstudios"
+                                        BackgroundColor="#4CAF50"
+                                        TextColor="White"
+                                        CornerRadius="10" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,195 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClinicaMedica.Cliente.Pages.Doctor.GenerarTurnosMasivosPage"
+             Title="Generar turnos masivos"
+             BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Contenido scrolleable -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <ActivityIndicator x:Name="Loading"
+                                   IsVisible="False"
+                                   IsRunning="False"/>
+
+                <!-- PERIODO -->
+                <Label Text="Período"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Frame Padding="10"
+                       CornerRadius="12"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                       BorderColor="{AppThemeBinding Light=#E2E2E2, Dark=#2A2A2A}">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Desde"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                        <DatePicker x:Name="DesdeDate"
+                                    TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                        <Label Text="Hasta"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                        <DatePicker x:Name="HastaDate"
+                                    TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- HORARIO -->
+                <Label Text="Horario diario"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Frame Padding="10"
+                       CornerRadius="12"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                       BorderColor="{AppThemeBinding Light=#E2E2E2, Dark=#2A2A2A}">
+                    <HorizontalStackLayout Spacing="12">
+                        <VerticalStackLayout WidthRequest="160">
+                            <Label Text="Inicio"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                            <TimePicker x:Name="HoraInicioPicker"
+                                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout WidthRequest="160">
+                            <Label Text="Fin"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                            <TimePicker x:Name="HoraFinPicker"
+                                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- DURACION -->
+                <Label Text="Duración (min)"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Frame Padding="10"
+                       CornerRadius="12"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                       BorderColor="{AppThemeBinding Light=#E2E2E2, Dark=#2A2A2A}">
+                    <Entry x:Name="DuracionEntry"
+                           Keyboard="Numeric"
+                           Placeholder="Ej: 20"
+                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                           PlaceholderColor="{AppThemeBinding Light=#888888, Dark=#AAAAAA}"/>
+                </Frame>
+
+                <!-- MAX POR DIA -->
+                <Label Text="Máx. turnos por día (opcional)"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Frame Padding="10"
+                       CornerRadius="12"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                       BorderColor="{AppThemeBinding Light=#E2E2E2, Dark=#2A2A2A}">
+                    <Entry x:Name="MaxPorDiaEntry"
+                           Keyboard="Numeric"
+                           Placeholder="Vacío = sin límite"
+                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                           PlaceholderColor="{AppThemeBinding Light=#888888, Dark=#AAAAAA}"/>
+                </Frame>
+
+                <!-- EXCLUIR DIAS -->
+                <Label Text="Excluir días"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Frame Padding="10"
+                       CornerRadius="12"
+                       HasShadow="False"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                       BorderColor="{AppThemeBinding Light=#E2E2E2, Dark=#2A2A2A}">
+                    <VerticalStackLayout Spacing="6">
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkLun" />
+                            <Label Text="Lunes"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkMar" />
+                            <Label Text="Martes"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkMie" />
+                            <Label Text="Miércoles"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkJue" />
+                            <Label Text="Jueves"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkVie" />
+                            <Label Text="Viernes"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkSab" />
+                            <Label Text="Sábado"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout>
+                            <CheckBox x:Name="ChkDom" />
+                            <Label Text="Domingo"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- BOTON -->
+                <Button Text="Generar"
+                        BackgroundColor="#0A68FF"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="52"
+                        Clicked="OnGenerarClicked"/>
+
+                <Label x:Name="LblResultado"
+                       Text=""
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <BoxView HeightRequest="16" Opacity="0"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

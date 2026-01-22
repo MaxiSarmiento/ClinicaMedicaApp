@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Paciente.MisTurnosPage"
+    Title="Mis Turnos"
+    BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0" RowSpacing="0">
+
+        <!-- Lista -->
+        <CollectionView x:Name="TurnosList"
+                        Grid.Row="0"
+                        Margin="12,12,12,0"
+                        SelectionMode="None">
+
+          
+            <CollectionView.Footer>
+                <BoxView HeightRequest="80" Opacity="0"/>
+            </CollectionView.Footer>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" Spacing="10">
+                    <Label Text="Todavía no tenés turnos reservados."
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                           Padding="12"
+                           Margin="6"
+                           CornerRadius="12">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding FechaHoraString}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=White}"/>
+
+                            <Label Text="{Binding Doctor}"
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light=#444444, Dark=#CCCCCC}"/>
+
+                            <Label Text="{Binding Estado}"
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light=#666666, Dark=#AAAAAA}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!-- Volver fijo abajo -->
+        <Grid Grid.Row="1" Padding="16,0,16,16">
+            <Button Text="Volver"
+                    Clicked="OnVolver"
+                    BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                    TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                    CornerRadius="10" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

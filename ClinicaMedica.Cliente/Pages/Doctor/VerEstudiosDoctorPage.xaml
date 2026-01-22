@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:ClinicaMedica.Cliente.Models"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.VerEstudiosDoctorPage"
+    Title="Estudios del Paciente"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Contenido scrolleable -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <Label Text="Buscar / Seleccionar Paciente" 
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <SearchBar x:Name="FiltroPaciente"
+                           Placeholder="Nombre / Apellido / DNI"
+                           TextChanged="OnFiltroChanged"
+                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <Picker x:Name="PacientePicker"
+                        Title="Seleccione un paciente"
+                        SelectedIndexChanged="OnPacienteChanged"
+                        ItemDisplayBinding="{Binding Display}"
+                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                        BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2A2A2A}" />
+
+                <CollectionView x:Name="EstudiosList" Margin="0,20,0,0">
+                    <CollectionView.EmptyView>
+                        <Label Text="Seleccioná un paciente para ver sus estudios."
+                               TextColor="{AppThemeBinding Light=Gray, Dark=#BDBDBD}"
+                               HorizontalOptions="Center"
+                               Margin="0,30,0,0"/>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:EstudioListDto">
+                            <Frame Padding="10"
+                                   Margin="0,5"
+                                   CornerRadius="8"
+                                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                                   BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+                                <VerticalStackLayout Spacing="6">
+
+                                    <Label Text="{Binding NombreArchivo}"
+                                           FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                                    <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}"
+                                           TextColor="{AppThemeBinding Light=Gray, Dark=#BDBDBD}" />
+
+                                    <Label Text="{Binding Descripcion}"
+                                           FontAttributes="Italic"
+                                           TextColor="{AppThemeBinding Light=#444444, Dark=#DDDDDD}" />
+
+                                    <Button Text="Abrir Estudio"
+                                            BackgroundColor="#1976D2"
+                                            TextColor="White"
+                                            Clicked="OnVerEstudio"
+                                            CommandParameter="{Binding Id}" />
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Botón fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

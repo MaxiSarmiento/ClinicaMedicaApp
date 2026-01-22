@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.BuscarEstudiosPage"
+    Title="Buscar Estudios">
+
+	<ScrollView>
+        <Grid RowDefinitions="*,Auto" Padding="0">
+            <VerticalStackLayout Padding="16" Spacing="8">
+			<Entry x:Name="DniEntry" Placeholder="DNI"/>
+			<Entry x:Name="NombreEntry" Placeholder="Nombre"/>
+			<Entry x:Name="ApellidoEntry" Placeholder="Apellido"/>
+			<Button Text="Buscar" Clicked="OnBuscar"/>
+			<CollectionView x:Name="ResultadosList">
+				<CollectionView.ItemTemplate>
+					<DataTemplate>
+						<Frame Padding="12" Margin="6" BorderColor="LightGray">
+							<VerticalStackLayout>
+								<Label Text="{Binding NombreArchivo}" FontAttributes="Bold"/>
+								<Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}"/>
+								<Label Text="{Binding Dni, StringFormat='DNI: {0}'}"/>
+								<Button Text="Ver PDF" Clicked="OnVerPdf"/>
+							</VerticalStackLayout>
+						</Frame>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+			</CollectionView>
+		</VerticalStackLayout>
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

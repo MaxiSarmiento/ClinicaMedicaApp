@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Paciente.ReservarTurnoPage"
+    Title="Reservar Turno"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Contenido scrolleable -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <Label Text="Especialidad"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                       FontAttributes="Bold"/>
+
+                <Picker x:Name="EspecialidadPicker"
+                        Title="Elegí una especialidad"
+                        SelectedIndexChanged="OnEspecialidadChanged"
+                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Label Text="Doctor"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                       FontAttributes="Bold"/>
+
+                <Picker x:Name="DoctorPicker"
+                        Title="Elegí un doctor"
+                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                <Label Text="Fecha"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                       FontAttributes="Bold"/>
+
+                <DatePicker x:Name="FechaFiltro"/>
+
+                <Button Text="Buscar disponibles"
+                        BackgroundColor="#0A68FF"
+                        TextColor="White"
+                        Clicked="OnBuscar"
+                        CornerRadius="10"/>
+
+                <ActivityIndicator x:Name="Loading"
+                                   IsVisible="False"
+                                   IsRunning="False"/>
+
+                <Label x:Name="LblInfo"
+                       IsVisible="False"
+                       TextColor="{AppThemeBinding Light=#444444, Dark=#CCCCCC}"
+                       FontSize="12"/>
+
+                <CollectionView x:Name="TurnosList" SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <Label Text="No hay turnos disponibles para los filtros elegidos."
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"
+                               Margin="0,10,0,0"/>
+                    </CollectionView.EmptyView>
+
+                    
+                    <CollectionView.Footer>
+                        <BoxView HeightRequest="80" Opacity="0"/>
+                    </CollectionView.Footer>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="12"
+                                   Margin="0,6"
+                                   CornerRadius="12"
+                                   BorderColor="{AppThemeBinding Light=#E5E5E5, Dark=#2A2A2A}"
+                                   BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+                                <VerticalStackLayout Spacing="6">
+
+                                    <Label Text="{Binding DoctorNombreCompleto}"
+                                           FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                                    <Label Text="{Binding EspecialidadesTexto}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#555555, Dark=#CCCCCC}"/>
+
+                                    <Label Text="{Binding FechaHora, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                           FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                                    <Label Text="{Binding DuracionMinutos, StringFormat='Duración: {0} min'}"
+                                           TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}"/>
+
+                                    <Button Text="Reservar"
+                                            BackgroundColor="#0A68FF"
+                                            TextColor="White"
+                                            CornerRadius="10"
+                                            Clicked="OnReservar"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

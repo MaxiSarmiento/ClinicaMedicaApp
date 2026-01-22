@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.ConfigurarAgendaPage"
+    Title="Configurar Agenda"
+    BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#121212}">
+
+    <Grid RowDefinitions="Auto,Auto,*,*,Auto">
+
+        <!-- Loading -->
+        <ActivityIndicator x:Name="Loading"
+                           Grid.Row="0"
+                           Margin="16,16,16,0"
+                           IsVisible="False"
+                           IsRunning="False"/>
+
+        <!-- Debug -->
+        <Label x:Name="LblDebug"
+               Grid.Row="1"
+               Margin="16,8"
+               Text=""
+               IsVisible="False"
+               TextColor="Red"
+               FontSize="12"
+               LineBreakMode="WordWrap" />
+
+        <!-- LISTA -->
+        <VerticalStackLayout Grid.Row="2" Padding="16" Spacing="12">
+
+            <Label Text="Reglas semanales"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+            <CollectionView x:Name="AgendaList" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Frame Padding="14"
+                           CornerRadius="12"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                           BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+                        <Label Text="Todavía no tenés reglas cargadas. Agregá una abajo (día, horario y duración)."
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"
+                               FontSize="13"/>
+                    </Frame>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12"
+                               Margin="0,0,0,10"
+                               CornerRadius="12"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                               BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                <Label Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding DiaTexto}"
+                                       FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                                <Button Grid.Row="0" Grid.Column="1"
+                                        Text="Eliminar"
+                                        Clicked="OnEliminarClicked"
+                                        CommandParameter="{Binding Id}"
+                                        BackgroundColor="{AppThemeBinding Light=#D32F2F, Dark=#B71C1C}"
+                                        TextColor="White"
+                                        CornerRadius="10"
+                                        Padding="12,6"/>
+
+                                <Label Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding HorarioTexto}"
+                                       TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}"/>
+
+                                <Label Grid.Row="2" Grid.Column="0"
+                                       Text="{Binding DuracionTexto}"
+                                       FontSize="12"
+                                       TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+
+        <!-- FORM -->
+        <ScrollView Grid.Row="3">
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <BoxView HeightRequest="1" Opacity="0.2" />
+
+                <Label Text="Agregar regla"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <Picker x:Name="DiaPicker"
+                        Title="Día de la semana"
+                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                        BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2A2A2A}" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <VerticalStackLayout WidthRequest="160">
+                        <Label Text="Hora inicio" FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"/>
+                        <TimePicker x:Name="HoraInicioPicker" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout WidthRequest="160">
+                        <Label Text="Hora fin" FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"/>
+                        <TimePicker x:Name="HoraFinPicker" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <Entry x:Name="DuracionEntry"
+                       Placeholder="Duración (minutos) ej: 20"
+                       Keyboard="Numeric"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <Button Text="Guardar regla"
+                        Clicked="OnGuardarReglaClicked"
+                        BackgroundColor="#0A68FF"
+                        TextColor="White"
+                        CornerRadius="10"/>
+
+                <BoxView HeightRequest="1" Opacity="0.2" />
+
+                <Label Text="Generar turnos (desde agenda)"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <DatePicker x:Name="DesdeDate" />
+                <DatePicker x:Name="HastaDate" />
+
+                <Button Text="Generar turnos"
+                        Clicked="OnGenerarTurnosClicked"
+                        CornerRadius="10" />
+
+                <Button Text="Ver turnos generados"
+                        Clicked="OnVerAgendaClicked"
+                        BackgroundColor="#0A68FF"
+                        TextColor="White"
+                        CornerRadius="10"/>
+
+                <BoxView HeightRequest="20" Opacity="0" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ✅ Volver fijo abajo -->
+        <Button Grid.Row="4"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

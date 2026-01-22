@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.HomeDoctorPage"
+    Title="Doctor"
+    BackgroundColor="#F7F7F7">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Header -->
+        <Grid Padding="16" BackgroundColor="White" ColumnDefinitions="Auto,*">
+            <Frame WidthRequest="48" HeightRequest="48" CornerRadius="24"
+                   BackgroundColor="#0A68FF" Padding="0" HasShadow="False"
+                   VerticalOptions="Center">
+                <Label x:Name="LblIniciales" Text="DR"
+                       TextColor="White" FontAttributes="Bold"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Frame>
+
+            <VerticalStackLayout Grid.Column="1" Spacing="2" Padding="12,0,0,0">
+                <Label x:Name="LblNombre" Text="Doctor"
+                       FontSize="18" FontAttributes="Bold" TextColor="#111"/>
+                <Label x:Name="LblEspecialidades" Text="—"
+                       FontSize="13" TextColor="#666"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="12">
+
+                <ActivityIndicator x:Name="Loading"
+                                   IsVisible="False"
+                                   IsRunning="False"/>
+                <Button Text="Ver Agenda" Clicked="OnDoctorAgenda"/>
+                <Button Text="Configurar Agenda" Clicked="OnConfigurarAgenda"/>
+                <Button Text="Buscar Pacientes" Clicked="OnBuscarPaciente"/>
+                <Button Text="Buscar Estudios" Clicked="OnBuscarEstudios"/>
+                <Button Text="Mi Perfil" Clicked="OnPerfilDoctor"/>
+
+                <Button Text="Cerrar sesión"
+                        BackgroundColor="#444"
+                        TextColor="White"
+                        Clicked="OnLogout"/>
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

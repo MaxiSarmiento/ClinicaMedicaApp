@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.SeleccionarEspecialidadPage"
+    Title="Agregar Especialidad">
+
+    <VerticalStackLayout Padding="20" Spacing="16">
+
+        <Label Text="Seleccioná una Especialidad"
+               FontSize="20"
+               HorizontalOptions="Center" />
+
+        <Picker x:Name="PickerEspecialidades"
+                Title="Especialidades disponibles" />
+
+        <Button Text="Agregar"
+                Clicked="OnAgregar"
+                BackgroundColor="#4CAF50"
+                TextColor="White"
+                HorizontalOptions="Center"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>

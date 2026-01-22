@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Paciente.HomePacientePage"
+    Title="Inicio"
+    BackgroundColor="#F7F7F7">
+
+    <Grid>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <Grid RowDefinitions="Auto,*">
+
+            <!-- Barra azul -->
+            <Grid Row="0" BackgroundColor="#0A68FF" Padding="14"
+                  ColumnDefinitions="Auto,*">
+                <Button Text="☰"
+                        Clicked="OnToggleMenu"
+                        BackgroundColor="Transparent"
+                        TextColor="White"
+                        FontSize="22"
+                        WidthRequest="48"
+                        HeightRequest="48"/>
+
+                <Label Grid.Column="1"
+                       Text="Panel Usuario"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       VerticalOptions="Center"/>
+            </Grid>
+
+            <!-- Scroll -->
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="20" Spacing="20">
+
+                    <!-- PERFIL -->
+                    <Frame CornerRadius="15" Padding="15" BackgroundColor="White" HasShadow="True">
+                        <Grid ColumnDefinitions="80,*" ColumnSpacing="10">
+                            <Frame WidthRequest="70" HeightRequest="70" CornerRadius="35"
+                                   BackgroundColor="#DDD"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                                <Label x:Name="LblIniciales"
+                                       FontSize="24"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Frame>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                <Label x:Name="LblNombre"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="#222" />
+                                <Label x:Name="LblEdad"
+                                       FontSize="14"
+                                       TextColor="#555" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+
+                    <!-- OBRA SOCIAL -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Obra Social" FontSize="14" TextColor="#777"/>
+                        <Label x:Name="LblObraSocial" FontSize="18" FontAttributes="Bold"/>
+
+                        <Label Text="Número de socio" FontSize="14" TextColor="#777" Margin="0,10,0,0"/>
+
+                        <HorizontalStackLayout>
+                            <Label x:Name="LblNroSocio" FontSize="18" />
+                            <Switch x:Name="SwMostrarNro" Margin="10,0,0,0"
+                                    Toggled="OnToggleNroSocio"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                    <!-- BOTONES -->
+                    <Button Text="🔍 Buscar Profesional"
+                            Clicked="OnBuscarProfesional"
+                            BackgroundColor="#0A68FF"
+                            TextColor="White"/>
+
+                    <Button Text="📅 Reservar Turno"
+                            Clicked="OnReservarTurno"
+                            BackgroundColor="#0A68FF"
+                            TextColor="White"/>
+
+                    <Button Text="🗂 Mis Turnos"
+                            Clicked="OnMisTurnos"
+                            BackgroundColor="#0A68FF"
+                            TextColor="White"/>
+
+                    <Button Text="🧪 Ver mis Estudios"
+                            Clicked="OnEstudios"
+                            BackgroundColor="#0A68FF"
+                            TextColor="White"/>
+
+                    <Button Text="Cerrar sesión"
+                        BackgroundColor="#444"
+                        TextColor="White"
+                        Clicked="OnLogout"/>
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </Grid>
+
+        <!-- OVERLAY MENÚ -->
+        <Grid x:Name="MenuOverlay"
+              IsVisible="False"
+              BackgroundColor="#80000000">
+
+            <Frame BackgroundColor="White"
+                   CornerRadius="14"
+                   Padding="14"
+                   WidthRequest="260"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Start"
+                   Margin="14,70,0,0">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Menú" FontAttributes="Bold" FontSize="18"/>
+
+                    <Button Text="Editar mi perfil"
+                            Clicked="OnEditarPerfil"
+                            BackgroundColor="#0A68FF"
+                            TextColor="White"/>
+
+                    <Button Text="Modo claro/oscuro"
+                            Clicked="OnCambiarTema"
+                            BackgroundColor="#0A68FF"
+                            TextColor="White"/>
+
+                    <Button Text="Cerrar sesión"
+                            Clicked="OnLogout"
+                            BackgroundColor="Firebrick"
+                            TextColor="White"/>
+
+                    <Button Text="Cerrar"
+                            Clicked="OnToggleMenu"
+                            BackgroundColor="#cccccc"
+                            TextColor="Black"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Click fuera para cerrar -->
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnOverlayTapped"/>
+            </Grid.GestureRecognizers>
+        </Grid>
+
+    </Grid>
+</ContentPage>

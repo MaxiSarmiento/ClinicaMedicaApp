@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Paciente.VerEstudiosPacientePage"
+    Title="Mis Estudios">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="16">
+
+        <!-- Loading -->
+        <ActivityIndicator x:Name="Loading"
+                           Grid.Row="0"
+                           IsRunning="False"
+                           IsVisible="False"
+                           HorizontalOptions="Center"/>
+
+        <!-- Lista -->
+        <CollectionView x:Name="ListadoEstudios" Grid.Row="1">
+            <CollectionView.EmptyView>
+                <Label Text="No hay estudios cargados."
+                       TextColor="Gray"
+                       HorizontalOptions="Center"
+                       Margin="0,30,0,0"/>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12" Margin="6" BorderColor="LightGray">
+                        <VerticalStackLayout Spacing="8">
+
+                            <!-- Header con icono -->
+                            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                                <Label Text="{Binding Icono}" FontSize="26" />
+                                <VerticalStackLayout Spacing="2">
+                                    <Label Text="{Binding NombreArchivo}" FontAttributes="Bold"/>
+                                    <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}"
+                                           TextColor="Gray"
+                                           FontSize="13"/>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+
+                            <Label Text="{Binding Descripcion}" TextColor="Gray"/>
+
+                            <Button Text="Abrir"
+                                    Clicked="OnVerArchivo"
+                                    CommandParameter="{Binding Id}" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Volver fijo -->
+        <Button Grid.Row="2"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="#cccccc"
+                TextColor="Black"
+                Margin="0,12,0,0"/>
+    </Grid>
+</ContentPage>

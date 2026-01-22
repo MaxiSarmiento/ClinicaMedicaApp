@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.CrearTurnoSingularPage"
+    Title="Crear Turno"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Contenido -->
+        <VerticalStackLayout Grid.Row="0" Padding="20" Spacing="12">
+
+            <DatePicker x:Name="FechaPicker" />
+
+            <TimePicker x:Name="HoraPicker" />
+
+            <Entry x:Name="DuracionEntry"
+                   Placeholder="Duración (minutos)"
+                   Keyboard="Numeric"
+                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+            <Button Text="Crear Turno"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnCrearTurno" />
+
+        </VerticalStackLayout>
+
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

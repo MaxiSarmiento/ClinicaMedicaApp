@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.PerfilDoctorPage"
+    Title="Mi Perfil"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Scroll -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <Label Text="Perfil del Doctor"
+                       FontSize="26"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <Entry x:Name="EntryNombre" Placeholder="Nombre"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+                <Entry x:Name="EntryApellido" Placeholder="Apellido"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+                <Entry x:Name="EntryDNI" Placeholder="DNI" Keyboard="Numeric"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+                <Entry x:Name="EntryEmail" Placeholder="Email" Keyboard="Email"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <!-- Obras Sociales -->
+                <Label Text="Obras Sociales"
+                       FontSize="20"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <CollectionView x:Name="ListaOS"
+                                HeightRequest="200">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem Text="Eliminar"
+                                                   BackgroundColor="{AppThemeBinding Light=#D32F2F, Dark=#B71C1C}"
+                                                   CommandParameter="{Binding}"
+                                                   Invoked="OnEliminarOS"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Grid Padding="10">
+                                    <Label Text="{Binding Nombre}"
+                                           FontSize="18"
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                </Grid>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="Agregar Obra Social"
+                        Clicked="OnAgregarOS"
+                        BackgroundColor="#2196F3"
+                        TextColor="White"
+                        CornerRadius="10" />
+
+                <!-- Especialidades -->
+                <Label Text="Especialidades"
+                       FontSize="20"
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                <CollectionView x:Name="ListaEsp"
+                                HeightRequest="200">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems Mode="Reveal">
+                                        <SwipeItem Text="Eliminar"
+                                                   BackgroundColor="{AppThemeBinding Light=#D32F2F, Dark=#B71C1C}"
+                                                   CommandParameter="{Binding}"
+                                                   Invoked="OnEliminarEsp"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Grid Padding="10">
+                                    <Label Text="{Binding Nombre}"
+                                           FontSize="18"
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                </Grid>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="Agregar Especialidad"
+                        Clicked="OnAgregarEsp"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        CornerRadius="10" />
+
+                <Button Text="Guardar Cambios"
+                        Clicked="OnGuardar"
+                        BackgroundColor="#009688"
+                        TextColor="White"
+                        CornerRadius="10" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+    </Grid>
+</ContentPage>

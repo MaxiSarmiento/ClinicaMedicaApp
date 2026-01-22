@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClinicaMedica.Cliente.Pages.Paciente.TurnosDisponiblesPage"
+             Title="Turnos disponibles"
+             BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#121212}">
+
+    <VerticalStackLayout Padding="16" Spacing="10">
+
+        <Label Text="Elegí una fecha"
+               FontAttributes="Bold"
+               TextColor="{AppThemeBinding Light=#111, Dark=#FFF}"/>
+
+        <DatePicker x:Name="FechaFiltro"
+                    TextColor="{AppThemeBinding Light=#111, Dark=#FFF}"/>
+
+        <Button Text="Buscar disponibles"
+                BackgroundColor="#0A68FF"
+                TextColor="White"
+                Clicked="OnBuscar"/>
+
+        <ActivityIndicator x:Name="Loading"
+                           IsVisible="False"
+                           IsRunning="False"/>
+
+        <CollectionView x:Name="TurnosList" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="No hay turnos disponibles para esa fecha."
+                       TextColor="{AppThemeBinding Light=#666, Dark=#BBB}"
+                       Margin="0,12,0,0"/>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12"
+                           Margin="0,6"
+                           CornerRadius="12"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                           BorderColor="{AppThemeBinding Light=#E2E2E2, Dark=#2A2A2A}"
+                           HasShadow="False">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding FechaHora, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#111, Dark=#FFF}"/>
+
+                            <Label Text="{Binding DuracionMinutos, StringFormat='Duración: {0} min'}"
+                                   TextColor="{AppThemeBinding Light=#444, Dark=#DDD}"/>
+
+                            <Button Text="Reservar"
+                                    BackgroundColor="#0A68FF"
+                                    TextColor="White"
+                                    Clicked="OnReservar"
+                                    CommandParameter="{Binding Id}"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>

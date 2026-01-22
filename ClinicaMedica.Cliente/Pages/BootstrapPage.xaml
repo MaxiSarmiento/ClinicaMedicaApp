@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.BootstrapPage"
+    BackgroundColor="White">
+
+    <Grid>
+
+        <!-- Imagen full screen -->
+        <Image Source="logo_placeholder.png"
+               Aspect="AspectFill"
+               HorizontalOptions="Fill"
+               VerticalOptions="Fill" />
+
+        <!-- Overlay de carga arriba -->
+        <VerticalStackLayout
+            Spacing="14"
+            Padding="24"
+            VerticalOptions="Center"
+            HorizontalOptions="Center">
+
+            <Label Text="Cargando…"
+                   FontSize="14"
+                   TextColor="White"
+                   HorizontalOptions="Center"/>
+
+            <ActivityIndicator IsRunning="True"
+                               HeightRequest="30"
+                               WidthRequest="30"
+                               Color="White"/>
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

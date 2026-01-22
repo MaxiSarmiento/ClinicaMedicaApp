@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    x:Class="ClinicaMedica.Cliente.Pages.RegisterPage"
+    Title="Nuevo Usuario"
+    BackgroundColor="{AppThemeBinding Light=White, Dark=#121212}">
+    <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="18">
+
+            <!-- TÍTULO -->
+            <Label Text="Nuevo Usuario"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+
+            <!-- NOMBRE -->
+            <Label Text="Nombre"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10"
+                   Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <Entry x:Name="NombreEntry"
+                       Placeholder="Ej: Juan"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
+            </Frame>
+
+            <!-- APELLIDO -->
+            <Label Text="Apellido"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10"
+                   Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <Entry x:Name="ApellidoEntry"
+                       Placeholder="Ej: Pérez"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
+            </Frame>
+
+            <!-- DNI -->
+            <Label Text="DNI"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10"
+                   Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <Entry x:Name="DniEntry"
+                       Placeholder="Ej: 30123456"
+                       Keyboard="Numeric"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
+            </Frame>
+
+            <!-- FECHA DE NACIMIENTO -->
+            <Label Text="Fecha de nacimiento"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10"
+                   Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                    <DatePicker x:Name="FechaNacimientoPicker"
+                                Date="{x:Static sys:DateTime.Now}"
+                                MaximumDate="{x:Static sys:DateTime.Now}"
+                                MinimumDate="1920-01-01"
+                                DateSelected="OnFechaNacimientoChanged"
+                                TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+
+                    <Label x:Name="EdadLabel"
+                           Text=""
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light=#444444, Dark=#CFCFCF}"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Frame>
+
+            <!-- EMAIL -->
+            <Label Text="Email"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10"
+                   Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Ej: usuario@mail.com"
+                       Keyboard="Email"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
+            </Frame>
+
+            <!-- CONTRASEÑA -->
+            <Label Text="Contraseña"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10"
+                   Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Mínimo 6 caracteres"
+                       IsPassword="True"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
+            </Frame>
+
+            <!-- BOTÓN REGISTRO -->
+            <Button Text="Registrarse"
+                    Clicked="OnRegistrarClicked"
+                    BackgroundColor="#0A68FF"
+                    TextColor="White"
+                    FontSize="18"
+                    HeightRequest="50"
+                    CornerRadius="10" />
+
+            <!-- SELECTOR DE ROL (DEBUG) -->
+            <Frame CornerRadius="10"
+                   Padding="12"
+                   BorderColor="{AppThemeBinding Light=#FFB3B3, Dark=#6A2B2B}"
+                   BackgroundColor="{AppThemeBinding Light=#FFF2F2, Dark=#241616}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Seleccionar tipo de usuario (DEBUG)"
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light=Red, Dark=#FF8080}"
+                           FontAttributes="Bold" />
+
+                    <Picker x:Name="RolPicker"
+                            Title="Elegir Rol"
+                            FontSize="16"
+                            TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                            TitleColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}">
+                        <Picker.Items>
+                            <x:String>Paciente</x:String>
+                            <x:String>Doctor</x:String>
+                            <x:String>Admin</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- BOTÓN VOLVER -->
+            <Button Text="Volver"
+                    Clicked="OnVolverClicked"
+                    BackgroundColor="Transparent"
+                    TextColor="#0A68FF"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

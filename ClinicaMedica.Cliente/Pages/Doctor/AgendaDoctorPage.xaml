@@ -1,0 +1,72 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ClinicaMedica.Cliente.Pages.Doctor.AgendaDoctorPage"
+             Title="Mi Agenda"
+             BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Contenido -->
+        <VerticalStackLayout Grid.Row="0" Padding="16" Spacing="12">
+
+            <HorizontalStackLayout Spacing="10">
+                <DatePicker x:Name="DesdeDate" />
+                <DatePicker x:Name="HastaDate" />
+            </HorizontalStackLayout>
+
+            <Button Text="Cargar agenda"
+                    Clicked="OnCargarAgenda"
+                    BackgroundColor="#1976D2"
+                    TextColor="White"
+                    CornerRadius="10" />
+
+            <ActivityIndicator x:Name="Loading"
+                               IsVisible="False"
+                               IsRunning="False" />
+
+            <CollectionView x:Name="TurnosList" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="No hay turnos en el rango."
+                           Opacity="0.7"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"
+                           HorizontalOptions="Center"
+                           Margin="0,20,0,0"/>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="12"
+                               Margin="0,0,0,10"
+                               CornerRadius="12"
+                               BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                               BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding FechaTexto}"
+                                       FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                <Label Text="{Binding EstadoTexto}"
+                                       Opacity="0.8"
+                                       TextColor="{AppThemeBinding Light=#333333, Dark=#DDDDDD}"/>
+                                <Label Text="{Binding PacienteTexto}"
+                                       FontSize="12"
+                                       Opacity="0.8"
+                                       TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+
+        <!-- Volver fijo abajo -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

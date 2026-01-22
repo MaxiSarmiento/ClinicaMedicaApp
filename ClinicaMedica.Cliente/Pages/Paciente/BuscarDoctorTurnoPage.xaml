@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Paciente.BuscarDoctorTurnoPage"
+    Title="Seleccionar Doctor"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid RowDefinitions="*,Auto" Padding="0">
+
+        <!-- Lista -->
+        <CollectionView x:Name="DoctoresList"
+                        Grid.Row="0"
+                        Margin="16"
+                        SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <Label Text="No hay doctores disponibles."
+                       HorizontalOptions="Center"
+                       Margin="0,20,0,0"
+                       TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}" />
+            </CollectionView.EmptyView>
+
+       
+            <CollectionView.Footer>
+                <BoxView HeightRequest="80" Opacity="0"/>
+            </CollectionView.Footer>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10"
+                           Margin="6"
+                           CornerRadius="12"
+                           BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                           BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding NombreCompleto}"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+
+                            <Label Text="{Binding Advertencia}"
+                                   TextColor="Red"/>
+
+                            <Button Text="Ver turnos"
+                                    CommandParameter="{Binding Id}"
+                                    Clicked="OnVerTurnos"
+                                    BackgroundColor="#0A68FF"
+                                    TextColor="White"
+                                    CornerRadius="10"/>
+                        </VerticalStackLayout>
+
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Volver -->
+        <Button Grid.Row="1"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10"
+                Margin="16,0,16,16" />
+
+    </Grid>
+</ContentPage>

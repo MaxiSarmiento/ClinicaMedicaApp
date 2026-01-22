@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:ClinicaMedica.Cliente.Models"
+    x:Class="ClinicaMedica.Cliente.Pages.Admin.EditarEstudiosPage"
+    Title="Editar Estudios">
+
+    <VerticalStackLayout Padding="16" Spacing="12">
+
+        <!-- Selector de paciente -->
+        <Label Text="Seleccionar Paciente" FontAttributes="Bold"/>
+        <Picker x:Name="PacientePicker"
+                Title="Seleccione un paciente"
+                SelectedIndexChanged="OnPacienteChanged" />
+
+        <!-- Lista de estudios -->
+        <CollectionView x:Name="EstudiosList" Margin="0,20,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Estudio">
+                    <Frame Padding="10" Margin="0,5" BorderColor="Gray" CornerRadius="8">
+                        <VerticalStackLayout>
+
+                            <Label Text="{Binding NombreArchivo}"
+                                   FontAttributes="Bold" />
+
+                            <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}"
+                                   TextColor="Gray" />
+
+                            <Label Text="{Binding Descripcion}"
+                                   FontAttributes="Italic"
+                                   TextColor="#444" />
+
+                            <HorizontalStackLayout Spacing="10" Margin="0,10,0,0">
+                                <Button Text="Ver"
+                                        BackgroundColor="#1976D2"
+                                        TextColor="White"
+                                        Clicked="OnVerEstudio"
+                                        CommandParameter="{Binding Id}" />
+
+                                <Button Text="Borrar"
+                                        BackgroundColor="#D32F2F"
+                                        TextColor="White"
+                                        Clicked="OnBorrarEstudio"
+                                        CommandParameter="{Binding Id}" />
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Volver"
+        Clicked="OnVolver"
+        BackgroundColor="#cccccc"
+        TextColor="Black" />
+
+    </VerticalStackLayout>
+
+</ContentPage>

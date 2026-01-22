@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Admin.EspecialidadesPage"
+    Title="Especialidades"
+    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="12">
+
+        <!--  Arriba -->
+        <Button Grid.Row="0"
+                Text="Agregar Especialidad"
+                Clicked="OnAgregar"
+                BackgroundColor="{AppThemeBinding Light=#1976D2, Dark=#1976D2}"
+                TextColor="White"
+                CornerRadius="10"
+                HorizontalOptions="Center" />
+
+        <!--  Lista -->
+        <CollectionView x:Name="ListaEspecialidades"
+                        Grid.Row="1"
+                        Margin="0,6,0,6">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="No hay especialidades cargadas."
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}" />
+                    <Label Text="Tocá 'Agregar Especialidad' para crear la primera."
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#BDBDBD}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12"
+                           Margin="6"
+                           CornerRadius="12"
+                           HasShadow="True"
+                           BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                           BorderColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10" VerticalOptions="Center">
+
+                            <Label Grid.Column="0"
+                                   Text="{Binding Nombre}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
+
+                            <Button Grid.Column="1"
+                                    Text="Eliminar"
+                                    Clicked="OnEliminar"
+                                    CommandParameter="{Binding}"
+                                    BackgroundColor="{AppThemeBinding Light=#D32F2F, Dark=#D32F2F}"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    Padding="12,6" />
+
+                        </Grid>
+
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!--  Abajo -->
+        <Button Grid.Row="2"
+                Text="Volver"
+                Clicked="OnVolver"
+                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                CornerRadius="10" />
+
+    </Grid>
+</ContentPage>

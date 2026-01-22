@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Admin.SubirEstudioPage"
+    Title="Estudios (Admin)">
+
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+
+        <!-- Buscar -->
+        <Label Grid.Row="0" Text="Buscar paciente (Nombre / Apellido / DNI)" FontAttributes="Bold"/>
+        <SearchBar Grid.Row="1" x:Name="Buscador"
+                   Placeholder="Ej: 30123456 o Perez"
+                   TextChanged="OnBuscarChanged"/>
+
+        <!--  Lista visible  -->
+        <CollectionView Grid.Row="2" x:Name="PacientesList">
+            <CollectionView.EmptyView>
+                <Label Text="No hay pacientes para mostrar." TextColor="Gray" Margin="0,8,0,0"/>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="0,6" BorderColor="#e0e0e0">
+                        <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center">
+                            <Label Text="{Binding Display}" Grid.Column="0" />
+                            <Button Text="Seleccionar"
+                                    Grid.Column="1"
+                                    CommandParameter="{Binding}"
+                                    Clicked="OnSeleccionarPaciente"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Seleccionado -->
+        <Label Grid.Row="3" x:Name="PacienteSeleccionadoLabel"
+               Text="Paciente seleccionado: (ninguno)"
+               FontAttributes="Bold"/>
+
+        <!-- Form -->
+        <DatePicker Grid.Row="4" x:Name="FechaPicker"/>
+        <Editor Grid.Row="5" x:Name="DescripcionEditor"
+                Placeholder="Descripción..."
+                AutoSize="TextChanges"
+                HeightRequest="70"/>
+
+        <HorizontalStackLayout Grid.Row="6" Spacing="10">
+            <Button Text="Seleccionar Archivo" Clicked="OnPickFile"/>
+            <Label x:Name="ArchivoLabel" Text="Ningún archivo" VerticalOptions="Center" TextColor="Gray"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Row="7" Spacing="10">
+            <Button Text="Subir estudio"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    Clicked="OnUpload"
+                    HorizontalOptions="FillAndExpand"/>
+            <Button Text="Volver"
+                    Clicked="OnVolver"
+                    BackgroundColor="#cccccc"
+                    TextColor="Black"/>
+        </HorizontalStackLayout>
+
+    </Grid>
+</ContentPage>

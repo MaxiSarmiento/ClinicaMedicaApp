@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ClinicaMedica.Cliente.Pages.Doctor.MisObrasSocialesPage"
+    Title="Mis Obras Sociales">
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+
+        <Button Text="Agregar Obra Social"
+                Clicked="OnAgregar"
+                HorizontalOptions="Center" />
+
+        <CollectionView x:Name="ListaDoctorObras"
+                        Margin="0,20,0,0">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Reveal">
+                                <SwipeItem Text="Eliminar"
+                                           BackgroundColor="IndianRed"
+                                           CommandParameter="{Binding}"
+                                           Invoked="OnEliminar" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Grid Padding="10">
+                            <Label Text="{Binding Nombre}"
+                                   FontSize="18" />
+                        </Grid>
+
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+        <Button Grid.Row="1"
+        Text="Volver"
+        Clicked="OnVolver"
+        BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+        CornerRadius="10"
+        Margin="16,0,16,16" />
+    </VerticalStackLayout>
+
+</ContentPage>
