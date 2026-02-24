@@ -1,8 +1,8 @@
 ﻿using ClinicaMedica.Cliente.Models;
 using ClinicaMedica.Cliente.Services;
-using Microsoft.Maui.Controls;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace ClinicaMedica.Cliente.Pages.Doctor;
 
@@ -91,18 +91,19 @@ public partial class PerfilDoctorPage : ContentPage
                 return;
             }
 
-            var dto = new
+            var payload = new
             {
                 Nombre = EntryNombre.Text?.Trim(),
                 Apellido = EntryApellido.Text?.Trim(),
-                DNI = EntryDNI.Text?.Trim(),
-                Email = EntryEmail.Text?.Trim()
+                FechaNacimiento = (DateTime?)null
             };
 
-            _api.Client.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", token);
+            var req = new HttpRequestMessage(HttpMethod.Put, "api/usuarios/actualizar-perfil");
+            req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            req.Content = JsonContent.Create(payload);
 
-            var resp = await _api.PutAsync($"api/Usuarios/actualizar-perfil/{id}", dto);
+            var resp = await _api.Client.SendAsync(req);
+            var body = await resp.Content.ReadAsStringAsync();
 
             if (resp.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -117,7 +118,11 @@ public partial class PerfilDoctorPage : ContentPage
                 return;
             }
 
-            resp.EnsureSuccessStatusCode();
+            if (!resp.IsSuccessStatusCode)
+            {
+                await DisplayAlert("Error", $"Perfil: HTTP {(int)resp.StatusCode}\n{body}", "OK");
+                return;
+            }
 
             await DisplayAlert("OK", "Datos actualizados", "Cerrar");
             await CargarPerfil();
@@ -165,10 +170,7 @@ public partial class PerfilDoctorPage : ContentPage
             await DisplayAlert("Error", ex.Message, "OK");
         }
     }
-    private async void OnVolver(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("HomeDoctor");
-    }
+
     private async void OnEliminarEsp(object sender, EventArgs e)
     {
         try
@@ -199,6 +201,10 @@ public partial class PerfilDoctorPage : ContentPage
         {
             await DisplayAlert("Error", ex.Message, "OK");
         }
+    }
 
+    private async void OnVolver(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("HomeDoctor");
     }
 }

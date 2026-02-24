@@ -2,6 +2,7 @@
 using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Google.Apis.Upload;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
 namespace ClinicaMedica.Backend.Services;
@@ -20,10 +21,17 @@ public class GoogleDriveService : IGoogleDriveService
 {
     private readonly DriveService _drive;
 
-    public GoogleDriveService(IConfiguration config)
+    public GoogleDriveService(IConfiguration config, IWebHostEnvironment env)
     {
-        var keyPath = config["GoogleDrive:ServiceAccountKeyPath"]
-                      ?? throw new Exception("Falta GoogleDrive:ServiceAccountKeyPath");
+        var configuredPath = config["GoogleDrive:ServiceAccountKeyPath"]
+            ?? throw new Exception("Falta GoogleDrive:ServiceAccountKeyPath");
+
+        var keyPath = Path.IsPathRooted(configuredPath)
+            ? configuredPath
+            : Path.Combine(env.ContentRootPath, configuredPath);
+
+        if (!File.Exists(keyPath))
+            throw new Exception($"No se encontró la key de Service Account en: {keyPath}");
 
         var credential = GoogleCredential
             .FromFile(keyPath)
@@ -53,9 +61,8 @@ public class GoogleDriveService : IGoogleDriveService
         if (progress.Status != UploadStatus.Completed)
             throw progress.Exception ?? new Exception($"Error subiendo a Drive. Status: {progress.Status}");
 
-        // ✅ ESTA ES LA PROPIEDAD CORRECTA
         var uploaded = request.ResponseBody
-                      ?? throw new Exception("Upload completado pero ResponseBody vino null");
+            ?? throw new Exception("Upload completado pero ResponseBody vino null");
 
         var download = !string.IsNullOrWhiteSpace(uploaded.WebContentLink)
             ? uploaded.WebContentLink

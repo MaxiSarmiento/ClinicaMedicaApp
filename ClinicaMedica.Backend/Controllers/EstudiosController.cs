@@ -15,21 +15,21 @@ public class EstudiosController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _config;
-    private readonly GoogleDriveOAuthService _drive;
+    private readonly IGoogleDriveService _driveSA;
+    private readonly GoogleDriveOAuthService _driveOAuth;
 
     public EstudiosController(
         AppDbContext context,
         IConfiguration config,
-        GoogleDriveOAuthService drive)
+        IGoogleDriveService driveSA,
+        GoogleDriveOAuthService driveOAuth)
     {
         _context = context;
         _config = config;
-        _drive = drive;
+        _driveSA = driveSA;
+        _driveOAuth = driveOAuth;
     }
 
-   
-    // SUBIR ESTUDIO (ADMIN)
- 
     [HttpPost("subir")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Subir([FromForm] UploadEstudioDto dto)
@@ -63,7 +63,7 @@ public class EstudiosController : ControllerBase
         };
 
         _context.Estudios.Add(estudio);
-        await _context.SaveChangesAsync(); 
+        await _context.SaveChangesAsync();
 
         try
         {
@@ -73,38 +73,21 @@ public class EstudiosController : ControllerBase
 
             var nombreDrive = $"{paciente.Id}_{estudio.Id}_{fecha:yyyyMMdd}{ext}";
 
-            Console.WriteLine(">> Antes de subir a Drive");
-
             await using var stream = dto.Archivo.OpenReadStream();
 
-            var (fileId, webViewLink, downloadLink) = await _drive.UploadAsync(
+            var (fileId, webViewLink, downloadLink) = await _driveOAuth.UploadAsync(
                 stream,
                 nombreDrive,
                 dto.Archivo.ContentType ?? "application/octet-stream",
                 folderId
             );
-            Console.WriteLine(">> SUBIR: empezó");
-            Console.WriteLine($">> Archivo: {dto.Archivo.FileName} - {dto.Archivo.Length} bytes");
-            Console.WriteLine(">> Antes de SaveChanges");
-
-          
-
-            Console.WriteLine(">> Después de SaveChanges");
-            Console.WriteLine(">> Antes de subir a Drive");
-
-           
-
-           
 
             estudio.DriveFileId = fileId;
             estudio.DriveWebViewLink = webViewLink;
             estudio.DriveDownloadLink = downloadLink;
 
-
             await _context.SaveChangesAsync();
-            Console.WriteLine(">> Después de subir a Drive");
 
-            Console.WriteLine(">> Después de subir a Drive");
             return Ok(new
             {
                 mensaje = "Estudio subido correctamente",
@@ -125,27 +108,28 @@ public class EstudiosController : ControllerBase
                 error = ex.Message,
                 inner = ex.InnerException?.Message
             });
-
         }
-
     }
 
-
-    
-    // LISTAR ESTUDIOS POR PACIENTE
- 
     [HttpGet("paciente/{pacienteId}")]
     [Authorize(Roles = "Admin,Doctor,Paciente")]
     public async Task<IActionResult> GetPorPaciente(int pacienteId)
     {
-        var authHeader = Request.Headers["Authorization"].ToString();
+        var userIdStr =
+            User.FindFirstValue("Id") ??
+            User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+            User.FindFirstValue("sub") ??
+            "0";
 
-        var userId = int.Parse(User.FindFirstValue("Id") ?? "0");
-        var rol = User.FindFirstValue("Rol") ?? "";
-        if (string.IsNullOrWhiteSpace(authHeader))
-            return Unauthorized("NO LLEGÓ AUTHORIZATION HEADER");
+        int.TryParse(userIdStr, out var userId);
 
-        if (rol == "Paciente" && userId != pacienteId)
+        var rol =
+            User.FindFirstValue(ClaimTypes.Role) ??
+            User.FindFirstValue("role") ??
+            User.FindFirstValue("Rol") ??
+            "";
+
+        if (string.Equals(rol, "Paciente", StringComparison.OrdinalIgnoreCase) && userId != pacienteId)
             return Forbid();
 
         var estudios = await _context.Estudios
@@ -163,9 +147,6 @@ public class EstudiosController : ControllerBase
         return Ok(estudios);
     }
 
-   
-    // DESCARGAR ESTUDIO
-
     [HttpGet("archivo/{id}")]
     [Authorize(Roles = "Paciente,Doctor")]
     public async Task<IActionResult> Descargar(int id)
@@ -181,27 +162,27 @@ public class EstudiosController : ControllerBase
 
         if (User.IsInRole("Paciente"))
         {
-            var userId = int.Parse(User.FindFirstValue("Id") ?? "0");
+            var userIdStr =
+                User.FindFirstValue("Id") ??
+                User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                User.FindFirstValue("sub") ??
+                "0";
+
+            int.TryParse(userIdStr, out var userId);
+
             if (estudio.IdPaciente != userId)
                 return Forbid();
         }
 
-        var result = await _drive.DownloadAsync(estudio.DriveFileId);
-
-        var bytes = result.bytes;
-        var contentType = result.contentType;
-        var fileName = result.fileName;
+        var result = await _driveSA.DownloadAsync(estudio.DriveFileId);
 
         return File(
-            bytes,
-            contentType,
-            estudio.NombreArchivo ?? fileName
+            result.bytes,
+            result.contentType,
+            estudio.NombreArchivo ?? result.fileName
         );
     }
 
-    
-    // ELIMINAR ESTUDIO (ADMIN)
-  
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Eliminar(int id)
@@ -211,7 +192,7 @@ public class EstudiosController : ControllerBase
             return NotFound();
 
         if (!string.IsNullOrWhiteSpace(estudio.DriveFileId))
-            await _drive.DeleteAsync(estudio.DriveFileId);
+            await _driveOAuth.DeleteAsync(estudio.DriveFileId);
 
         _context.Estudios.Remove(estudio);
         await _context.SaveChangesAsync();

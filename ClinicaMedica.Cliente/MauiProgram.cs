@@ -15,7 +15,7 @@ public static class MauiProgram
         builder.UseMauiApp<App>();
 
 #if ANDROID
-        var baseUrl = new Uri("http://192.168.0.113:5293/");
+        var baseUrl = new Uri("http://192.168.0.107:5293/");
 #else
         var baseUrl = new Uri("http://localhost:5293/");
 #endif

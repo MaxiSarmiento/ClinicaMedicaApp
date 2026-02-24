@@ -83,7 +83,9 @@ public partial class SeleccionarObraSocialPacientePage : ContentPage
             return;
 
         _onSelected(item);
-        await Shell.Current.GoToAsync("..");
+
+        // Como llegaste con Navigation.PushAsync, volvé así:
+        await Navigation.PopAsync();
     }
 
     public class ObraSocialItem

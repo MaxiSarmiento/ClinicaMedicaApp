@@ -95,23 +95,29 @@
                         BackgroundColor="#4CAF50"
                         TextColor="White"
                         CornerRadius="10" />
+                <Label Text="Al agregar o eliminar obras sociales/especialidades, se guarda automáticamente. El botón Guardar Cambios es solo para tu nombre y apellido."
+       FontSize="12"
+       TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
 
-                <Button Text="Guardar Cambios"
-                        Clicked="OnGuardar"
-                        BackgroundColor="#009688"
-                        TextColor="White"
-                        CornerRadius="10" />
 
             </VerticalStackLayout>
         </ScrollView>
 
         <!-- Volver fijo abajo -->
-        <Button Grid.Row="1"
-                Text="Volver"
-                Clicked="OnVolver"
-                BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
-                TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
-                CornerRadius="10"
-                Margin="16,0,16,16" />
-    </Grid>
+     
+            <Button Grid.Column="0"
+            Text="Guardar Cambios"
+            Clicked="OnGuardar"
+            BackgroundColor="#009688"
+            TextColor="White"
+            CornerRadius="10" />
+
+            <Button Grid.Column="1"
+            Text="Volver"
+            Clicked="OnVolver"
+            BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+            TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+            CornerRadius="10" />
+    </Grid> 
+    
 </ContentPage>

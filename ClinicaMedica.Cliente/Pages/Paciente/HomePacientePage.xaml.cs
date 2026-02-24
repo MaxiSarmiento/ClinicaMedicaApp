@@ -9,6 +9,9 @@ public partial class HomePacientePage : ContentPage
     private readonly ApiService _api;
     private string _nroSocioReal = "";
 
+    // Notificaciones
+    private List<TurnoHoyDto> _turnosHoy = new();
+
     public HomePacientePage(ApiService api)
     {
         InitializeComponent();
@@ -19,6 +22,7 @@ public partial class HomePacientePage : ContentPage
     {
         base.OnAppearing();
         await CargarDatosPaciente();
+        await CargarNotificacionesTurnosHoy(); 
     }
 
     private async Task CargarDatosPaciente()
@@ -51,9 +55,8 @@ public partial class HomePacientePage : ContentPage
 
             LblNombre.Text = $"{datos.Nombre} {datos.Apellido}".Trim();
 
-            //  EDAD
             if (!string.IsNullOrWhiteSpace(datos.FechaNacimiento) &&
-      DateTime.TryParse(datos.FechaNacimiento, out var fn))
+                DateTime.TryParse(datos.FechaNacimiento, out var fn))
             {
                 LblEdad.Text = $"{CalcularEdad(fn)} años";
             }
@@ -73,6 +76,108 @@ public partial class HomePacientePage : ContentPage
         }
     }
 
+
+    private async Task CargarNotificacionesTurnosHoy()
+    {
+        try
+        {
+            var token = await SecureStorage.GetAsync("token");
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                SetBadge(false);
+                _turnosHoy.Clear();
+                return;
+            }
+
+            _api.Client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            // Trae turnos del paciente (mis-turnos)
+            var turnos = await _api.GetJsonAsync<List<TurnoHoyDto>>("api/turnos/mis-turnos") ?? new();
+
+            var ahora = DateTime.Now;
+            var limite = ahora.AddHours(24);
+
+            _turnosHoy = turnos
+                .Where(t =>
+                    t.FechaHora >= ahora &&
+                    t.FechaHora <= limite &&
+                    string.Equals(t.Estado, "Reservado", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(t => t.FechaHora)
+                .ToList();
+
+            if (_turnosHoy.Count == 0)
+            {
+                SetBadge(false);
+                return;
+            }
+
+            // Colorear badge según el turno más cercano
+            var prox = _turnosHoy[0];
+            var mins = (prox.FechaHora - ahora).TotalMinutes;
+
+            // < 2h rojo, < 12h naranja, < 24h azul
+            if (mins <= 120)
+                SetBadge(true, Colors.Red);
+            else if (mins <= 720)
+                SetBadge(true, Colors.Orange);
+            else
+                SetBadge(true, Colors.DodgerBlue);
+        }
+        catch
+        {
+            SetBadge(false);
+            _turnosHoy.Clear();
+        }
+    }
+
+    private void SetBadge(bool visible, Color? color = null)
+    {
+        BadgeNoti.IsVisible = visible;
+
+        if (color != null)
+            BadgeNoti.BackgroundColor = color; 
+    }
+
+
+    private async void OnNotificacionesClicked(object sender, EventArgs e)
+    {
+        if (_turnosHoy.Count == 0)
+        {
+            await DisplayAlert("Notificaciones", "No tenés turnos en las próximas 24 horas.", "OK");
+            SetBadge(false);
+            return;
+        }
+
+        var ahora = DateTime.Now;
+
+        var lineas = _turnosHoy.Select(t =>
+        {
+            var cuando =
+                t.FechaHora.Date == DateTime.Today ? $"Hoy {t.FechaHora:HH:mm}" :
+                t.FechaHora.Date == DateTime.Today.AddDays(1) ? $"Mañana {t.FechaHora:HH:mm}" :
+                $"{t.FechaHora:dd/MM HH:mm}";
+
+            var faltan = t.FechaHora - ahora;
+            string en;
+
+            if (faltan.TotalMinutes < 60)
+                en = $"(en {Math.Max(0, (int)Math.Round(faltan.TotalMinutes))} min)";
+            else
+                en = $"(en {Math.Max(0, (int)Math.Round(faltan.TotalHours))} h)";
+
+            return $"• {cuando} {en}\n  Dr/a: {t.Doctor}";
+        });
+
+        var mensaje = string.Join("\n\n", lineas);
+
+        await DisplayAlert("Recordatorio de turnos", mensaje, "OK");
+
+        // opcional: al abrir notificaciones, oculto el badge
+        SetBadge(false);
+    }
+
+
     private static int CalcularEdad(DateTime fechaNacimiento)
     {
         var hoy = DateTime.Today;
@@ -91,7 +196,7 @@ public partial class HomePacientePage : ContentPage
     private void OnToggleNroSocio(object sender, ToggledEventArgs e)
         => LblNroSocio.Text = e.Value ? _nroSocioReal : OcultarNro(_nroSocioReal);
 
-    //Menú overlay 
+    // Menú overlay
     private void OnToggleMenu(object sender, EventArgs e)
         => MenuOverlay.IsVisible = !MenuOverlay.IsVisible;
 
@@ -107,16 +212,8 @@ public partial class HomePacientePage : ContentPage
     private void OnCambiarTema(object sender, EventArgs e)
     {
         MenuOverlay.IsVisible = false;
-        if (Application.Current.UserAppTheme == AppTheme.Light)
-        {
-            Application.Current.UserAppTheme =
-            AppTheme.Dark;
-        }
-        else
-        {
-            Application.Current.UserAppTheme =
-            AppTheme.Light;
-        }
+        Application.Current.UserAppTheme =
+            Application.Current.UserAppTheme == AppTheme.Light ? AppTheme.Dark : AppTheme.Light;
     }
 
     private async void OnLogout(object sender, EventArgs e)
@@ -134,15 +231,22 @@ public partial class HomePacientePage : ContentPage
 
     // ===== Botones =====
     private async void OnBuscarProfesional(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("BuscarDoctorTurno"); 
+        => await Shell.Current.GoToAsync("BuscarDoctorTurno");
 
     private async void OnReservarTurno(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("ReservarTurno"); 
+        => await Shell.Current.GoToAsync("ReservarTurno");
 
     private async void OnMisTurnos(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("MisTurnosPaciente"); 
+        => await Shell.Current.GoToAsync("MisTurnosPaciente");
 
     private async void OnEstudios(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("VerEstudiosPaciente"); 
- 
+        => await Shell.Current.GoToAsync("VerEstudiosPaciente");
+
+  
+        private class TurnoHoyDto
+        {
+        public DateTime FechaHora { get; set; }
+        public string Doctor { get; set; } = "";
+        public string Estado { get; set; } = ""; // "Libre" / "Reservado"
+    }
 }

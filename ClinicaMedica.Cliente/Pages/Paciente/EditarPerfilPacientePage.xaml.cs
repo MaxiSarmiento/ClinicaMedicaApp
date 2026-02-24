@@ -10,6 +10,10 @@ public partial class EditarPerfilPacientePage : ContentPage
     private readonly ApiService _api;
     private int _userId;
 
+    private int? _osidActual = null;
+    private int? _osidSeleccionada = null;
+    private string? _obraSocialNombre = null;
+
     public EditarPerfilPacientePage(ApiService api)
     {
         InitializeComponent();
@@ -28,7 +32,6 @@ public partial class EditarPerfilPacientePage : ContentPage
         {
             Loading.IsVisible = Loading.IsRunning = true;
 
-       
             var token = await SecureStorage.GetAsync("token");
             var idStr = await SecureStorage.GetAsync("userId");
 
@@ -39,11 +42,9 @@ public partial class EditarPerfilPacientePage : ContentPage
                 return;
             }
 
-          
             _api.Client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
-        
             var datos = await _api.GetJsonAsync<PerfilPacienteDto>($"api/usuarios/paciente/{_userId}");
 
             if (datos == null)
@@ -52,21 +53,22 @@ public partial class EditarPerfilPacientePage : ContentPage
                 return;
             }
 
-           
             TxtNombre.Text = datos.Nombre ?? "";
             TxtApellido.Text = datos.Apellido ?? "";
-            TxtDni.Text = datos.Dni ?? "";
+            TxtDni.Text = datos.DNI ?? "";
             TxtEmail.Text = datos.Email ?? "";
 
             if (!string.IsNullOrWhiteSpace(datos.FechaNacimiento) &&
-      DateTime.TryParse(datos.FechaNacimiento, out var fn))
+                DateTime.TryParse(datos.FechaNacimiento, out var fn))
             {
                 FechaNacimientoPicker.Date = fn.Date;
             }
+
             ActualizarEdad();
 
+            _osidActual = datos.OSID;
+            _osidSeleccionada = null;
 
-            // Obra social + Nro socio
             LblObraSocial.Text = string.IsNullOrWhiteSpace(datos.ObraSocial) ? "Sin Obra Social" : datos.ObraSocial;
             TxtNroSocio.Text = datos.NroSocio ?? "";
         }
@@ -102,12 +104,6 @@ public partial class EditarPerfilPacientePage : ContentPage
     private async void OnVolver(object sender, EventArgs e)
         => await Shell.Current.GoToAsync("..");
 
-    
-    // GUARDAR CAMBIOS (PUT)
-
-    private int? _osidSeleccionada = null; 
-    private string? _obraSocialNombre = null;
-
     private async void OnGuardar(object sender, EventArgs e)
     {
         try
@@ -120,10 +116,8 @@ public partial class EditarPerfilPacientePage : ContentPage
             if (string.IsNullOrWhiteSpace(token) || !int.TryParse(idStr, out var id) || id <= 0)
             {
                 await DisplayAlert("Sesión", "Sesión inválida. Volvé a iniciar sesión.", "OK");
-              
                 return;
             }
-
 
             var payload = new
             {
@@ -131,8 +125,6 @@ public partial class EditarPerfilPacientePage : ContentPage
                 Apellido = TxtApellido.Text?.Trim(),
                 FechaNacimiento = FechaNacimientoPicker.Date.Date
             };
-
-          
 
             var req1 = new HttpRequestMessage(HttpMethod.Put, "api/usuarios/actualizar-perfil");
             req1.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -146,14 +138,20 @@ public partial class EditarPerfilPacientePage : ContentPage
                 return;
             }
 
-          
             var nro = TxtNroSocio.Text?.Trim();
+            var osidParaEnviar = _osidSeleccionada ?? _osidActual;
 
-            if (_osidSeleccionada.HasValue || !string.IsNullOrWhiteSpace(nro))
+            if (!osidParaEnviar.HasValue && !string.IsNullOrWhiteSpace(nro))
+            {
+                await DisplayAlert("Error", "Ingresaste número de socio pero no seleccionaste obra social.", "OK");
+                return;
+            }
+
+            if (osidParaEnviar.HasValue && (_osidSeleccionada.HasValue || !string.IsNullOrWhiteSpace(nro)))
             {
                 var osPayload = new
                 {
-                    OSID = _osidSeleccionada,  
+                    OSID = osidParaEnviar.Value,
                     NroSocio = string.IsNullOrWhiteSpace(nro) ? null : nro
                 };
 
@@ -182,9 +180,6 @@ public partial class EditarPerfilPacientePage : ContentPage
             Loading.IsVisible = Loading.IsRunning = false;
         }
     }
-
-
-    // CAMBIAR PASSWORD 
 
     private async void OnCambiarPassword(object sender, EventArgs e)
     {
@@ -235,7 +230,6 @@ public partial class EditarPerfilPacientePage : ContentPage
 
             await DisplayAlert("Listo", "Contraseña actualizada.", "OK");
 
-            // limpiar campos
             PasswordActualEntry.Text = "";
             PasswordNuevaEntry.Text = "";
             PasswordRepetirEntry.Text = "";
@@ -250,7 +244,7 @@ public partial class EditarPerfilPacientePage : ContentPage
             Loading.IsVisible = Loading.IsRunning = false;
         }
     }
-    // toggles (ojito)
+
     private void OnTogglePasswordActual(object sender, EventArgs e)
         => PasswordActualEntry.IsPassword = !PasswordActualEntry.IsPassword;
 
@@ -260,7 +254,6 @@ public partial class EditarPerfilPacientePage : ContentPage
     private void OnTogglePasswordRepetir(object sender, EventArgs e)
         => PasswordRepetirEntry.IsPassword = !PasswordRepetirEntry.IsPassword;
 
-    // validación en vivo (cuando escribe)
     private void OnPasswordFieldsChanged(object sender, TextChangedEventArgs e)
     {
         ValidarPasswordsSoloUI();
@@ -271,7 +264,6 @@ public partial class EditarPerfilPacientePage : ContentPage
         var nueva = PasswordNuevaEntry.Text?.Trim() ?? "";
         var repetir = PasswordRepetirEntry.Text?.Trim() ?? "";
 
-        // si están vacías, no muestres error todavía (solo cuando empieza a escribir)
         if (string.IsNullOrWhiteSpace(nueva) && string.IsNullOrWhiteSpace(repetir))
         {
             LblPasswordError.IsVisible = false;
@@ -298,61 +290,22 @@ public partial class EditarPerfilPacientePage : ContentPage
         return true;
     }
 
-    // CAMBIAR OS 
-
     private async void OnCambiarOS(object sender, EventArgs e)
     {
-      
         var page = new SeleccionarObraSocialPacientePage(_api, async (os) =>
         {
-            
-            var nro = await DisplayPromptAsync("Número de socio", "Ingresá tu número de socio (opcional):", "OK", "Cancelar");
-            if (nro == null) return;
+            _osidSeleccionada = os.OSID;
+            _obraSocialNombre = os.Nombre;
 
-            await GuardarObraSocialAsync(os.OSID, nro);
+            LblObraSocial.Text = os.Nombre;
+
+            var nro = await DisplayPromptAsync("Número de socio", "Ingresá tu número de socio (opcional):", "OK", "Cancelar");
+            if (nro != null)
+                TxtNroSocio.Text = nro.Trim();
+
+            await Navigation.PopAsync();
         });
 
         await Navigation.PushAsync(page);
-    }
-    private async Task GuardarObraSocialAsync(int osid, string? nroSocio)
-    {
-        try
-        {
-            Loading.IsVisible = Loading.IsRunning = true;
-
-            var token = await SecureStorage.GetAsync("token");
-            var idStr = await SecureStorage.GetAsync("userId");
-
-            if (string.IsNullOrWhiteSpace(token) || !int.TryParse(idStr, out var id) || id <= 0)
-            {
-                await DisplayAlert("Sesión", "Sesión inválida.", "OK");
-                await Shell.Current.GoToAsync("Login");
-                return;
-            }
-
-            _api.Client.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            var resp = await _api.Client.PutAsJsonAsync($"api/Usuarios/paciente/obra-social/{id}", new
-            {
-                OSID = osid,
-                NroSocio = string.IsNullOrWhiteSpace(nroSocio) ? null : nroSocio.Trim()
-            });
-
-            resp.EnsureSuccessStatusCode();
-
-            await DisplayAlert("Listo", "Obra social actualizada.", "OK");
-
-            // refrescar pantalla
-            await CargarPerfilAsync();
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Error", ex.Message, "OK");
-        }
-        finally
-        {
-            Loading.IsVisible = Loading.IsRunning = false;
-        }
     }
 }

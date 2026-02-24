@@ -6,6 +6,7 @@ using ClinicaMedica.Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace ClinicaMedica.Backend.Controllers
@@ -423,10 +424,11 @@ namespace ClinicaMedica.Backend.Controllers
       
         [HttpPut("paciente/obra-social/{id}")]
         [Authorize(Roles = "Paciente,Admin")]
+    
         public async Task<IActionResult> ActualizarObraSocial(int id, [FromBody] CambiarOSDto dto)
         {
-            if (dto == null)
-                return BadRequest("Body inválido.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var idStr =
                 User.FindFirst("Id")?.Value ??
@@ -438,34 +440,35 @@ namespace ClinicaMedica.Backend.Controllers
 
             var rol = User.FindFirst(ClaimTypes.Role)?.Value ?? User.FindFirst("role")?.Value;
 
-   
+            // Si es Paciente, se fuerza el id del JWT
             if (string.Equals(rol, "Paciente", StringComparison.OrdinalIgnoreCase))
                 id = jwtId;
 
-           
+            // Validar existencia OS
             var existeOS = await _context.ObraSocial.AnyAsync(o => o.OSID == dto.OSID);
             if (!existeOS)
                 return BadRequest("La obra social seleccionada no existe.");
 
             var paciente = await _context.Usuarios.FindAsync(id);
-            if (paciente == null) return NotFound("Paciente no encontrado.");
+            if (paciente == null)
+                return NotFound("Paciente no encontrado.");
 
-           
             if (!string.Equals(paciente.Rol, "Paciente", StringComparison.OrdinalIgnoreCase))
                 return BadRequest("El usuario no es Paciente.");
 
             paciente.OSID = dto.OSID;
-            paciente.NroSocio = dto.NroSocio?.Trim();
+            paciente.NroSocio = string.IsNullOrWhiteSpace(dto.NroSocio) ? null : dto.NroSocio.Trim();
 
             await _context.SaveChangesAsync();
 
             return Ok(new { mensaje = "Obra social actualizada" });
         }
-
-
         public class CambiarOSDto
         {
+            [Required]
+            [Range(1, int.MaxValue, ErrorMessage = "OSID inválido.")]
             public int OSID { get; set; }
+
             public string? NroSocio { get; set; }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ClinicaMedica.Backend.Data;
 using ClinicaMedica.Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -14,11 +15,9 @@ builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-
-    options.ListenAnyIP(5293); 
+    options.ListenAnyIP(5293);
 });
 
-// Controllers y Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -50,21 +49,16 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
- 
 
-builder.Services.AddSingleton<IGoogleDriveService, GoogleDriveService>();
+builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>();      // Service Account (listar/descargar)
+builder.Services.AddScoped<GoogleDriveOAuthService>();                     // OAuth (subir/eliminar)
 
-// AuthService
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddSingleton<GoogleDriveOAuthService>();
 
-
-// ⭐ SQL SERVER
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ClinicaDb"))
 );
 
-// ⭐ CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowMobile", policy =>
@@ -75,7 +69,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ⭐ JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -98,20 +91,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var drive = scope.ServiceProvider.GetRequiredService<GoogleDriveOAuthService>();
-
-    var ok = await drive.PingAsync();
-    if (!ok)
-    {
-        app.Logger.LogWarning("⚠️ Google Drive NO está autorizado. Probá GET /api/health/drive para confirmar.");
-    }
-    else
-    {
-        app.Logger.LogInformation("✅ Google Drive autorizado correctamente.");
-    }
-}
 app.MapGet("/debug/routes", (IEnumerable<EndpointDataSource> sources) =>
 {
     var endpoints = sources.SelectMany(s => s.Endpoints)
@@ -123,7 +102,6 @@ app.MapGet("/debug/routes", (IEnumerable<EndpointDataSource> sources) =>
     return Results.Ok(endpoints);
 });
 
-// ⭐ Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -134,6 +112,7 @@ app.UseStaticFiles();
 app.UseCors("AllowMobile");
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.Use(async (ctx, next) =>
 {
     if (ctx.Request.Path.StartsWithSegments("/api/DoctorAgendas", StringComparison.OrdinalIgnoreCase)
@@ -150,6 +129,6 @@ app.Use(async (ctx, next) =>
         Console.WriteLine($"[RES] {ctx.Response.StatusCode} {ctx.Request.Method} {ctx.Request.Path}{ctx.Request.QueryString}");
     }
 });
-app.MapControllers();
 
+app.MapControllers();
 app.Run();

@@ -10,22 +10,24 @@
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
+
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="18">
 
-            <!-- TÍTULO -->
             <Label Text="Nuevo Usuario"
                    FontSize="26"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
-                   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnToggleDebugRol"/>
+                </Label.GestureRecognizers>
+            </Label>
 
-            <!-- NOMBRE -->
             <Label Text="Nombre"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
-            <Frame CornerRadius="10"
-                   Padding="10"
+            <Frame CornerRadius="10" Padding="10"
                    BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                 <Entry x:Name="NombreEntry"
@@ -35,12 +37,10 @@
                        PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
             </Frame>
 
-            <!-- APELLIDO -->
             <Label Text="Apellido"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
-            <Frame CornerRadius="10"
-                   Padding="10"
+            <Frame CornerRadius="10" Padding="10"
                    BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                 <Entry x:Name="ApellidoEntry"
@@ -50,12 +50,10 @@
                        PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
             </Frame>
 
-            <!-- DNI -->
             <Label Text="DNI"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
-            <Frame CornerRadius="10"
-                   Padding="10"
+            <Frame CornerRadius="10" Padding="10"
                    BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                 <Entry x:Name="DniEntry"
@@ -66,12 +64,10 @@
                        PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
             </Frame>
 
-            <!-- FECHA DE NACIMIENTO -->
             <Label Text="Fecha de nacimiento"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
-            <Frame CornerRadius="10"
-                   Padding="10"
+            <Frame CornerRadius="10" Padding="10"
                    BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                 <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
@@ -90,12 +86,10 @@
                 </HorizontalStackLayout>
             </Frame>
 
-            <!-- EMAIL -->
             <Label Text="Email"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
-            <Frame CornerRadius="10"
-                   Padding="10"
+            <Frame CornerRadius="10" Padding="10"
                    BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                 <Entry x:Name="EmailEntry"
@@ -106,12 +100,10 @@
                        PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
             </Frame>
 
-            <!-- CONTRASEÑA -->
             <Label Text="Contraseña"
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
-            <Frame CornerRadius="10"
-                   Padding="10"
+            <Frame CornerRadius="10" Padding="10"
                    BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                 <Entry x:Name="PasswordEntry"
@@ -122,7 +114,20 @@
                        PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
             </Frame>
 
-            <!-- BOTÓN REGISTRO -->
+            <Label Text="Repetir contraseña"
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#222222, Dark=#EDEDED}" />
+            <Frame CornerRadius="10" Padding="10"
+                   BorderColor="{AppThemeBinding Light=#BFBFBF, Dark=#3A3A3A}"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                <Entry x:Name="PasswordRepeatEntry"
+                       Placeholder="Repetir contraseña"
+                       IsPassword="True"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                       PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#B0B0B0}" />
+            </Frame>
+
             <Button Text="Registrarse"
                     Clicked="OnRegistrarClicked"
                     BackgroundColor="#0A68FF"
@@ -131,8 +136,9 @@
                     HeightRequest="50"
                     CornerRadius="10" />
 
-            <!-- SELECTOR DE ROL (DEBUG) -->
-            <Frame CornerRadius="10"
+            <Frame x:Name="RolDebugFrame"
+                   IsVisible="False"
+                   CornerRadius="10"
                    Padding="12"
                    BorderColor="{AppThemeBinding Light=#FFB3B3, Dark=#6A2B2B}"
                    BackgroundColor="{AppThemeBinding Light=#FFF2F2, Dark=#241616}">
@@ -156,7 +162,6 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- BOTÓN VOLVER -->
             <Button Text="Volver"
                     Clicked="OnVolverClicked"
                     BackgroundColor="Transparent"

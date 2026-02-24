@@ -12,8 +12,12 @@
         <Grid RowDefinitions="Auto,*">
 
             <!-- Barra azul -->
-            <Grid Row="0" BackgroundColor="#0A68FF" Padding="14"
-                  ColumnDefinitions="Auto,*">
+            <Grid Row="0"
+                  BackgroundColor="#0A68FF"
+                  Padding="14"
+                  ColumnDefinitions="Auto,*,Auto">
+
+                <!-- Menú -->
                 <Button Text="☰"
                         Clicked="OnToggleMenu"
                         BackgroundColor="Transparent"
@@ -22,12 +26,37 @@
                         WidthRequest="48"
                         HeightRequest="48"/>
 
+                <!-- Título -->
                 <Label Grid.Column="1"
                        Text="Panel Usuario"
                        TextColor="White"
                        FontAttributes="Bold"
                        FontSize="18"
                        VerticalOptions="Center"/>
+
+                <!-- Campana + badge -->
+                <Grid Grid.Column="2"
+                      WidthRequest="48"
+                      HeightRequest="48"
+                      HorizontalOptions="End"
+                      VerticalOptions="Center">
+
+                   
+                    <Button Text="🔔" BackgroundColor="Transparent" TextColor="White" Clicked="OnNotificacionesClicked"/>
+
+                    <!-- Badge rojo -->
+                    <BoxView x:Name="BadgeNoti"
+         IsVisible="False"
+         BackgroundColor="Red"
+         WidthRequest="10"
+         HeightRequest="10"
+         CornerRadius="5"
+         HorizontalOptions="End"
+         VerticalOptions="Start"
+         Margin="0,6,6,0"/>
+
+                </Grid>
+
             </Grid>
 
             <!-- Scroll -->
@@ -96,9 +125,9 @@
                             TextColor="White"/>
 
                     <Button Text="Cerrar sesión"
-                        BackgroundColor="#444"
-                        TextColor="White"
-                        Clicked="OnLogout"/>
+                            BackgroundColor="#444"
+                            TextColor="White"
+                            Clicked="OnLogout"/>
                 </VerticalStackLayout>
             </ScrollView>
 
