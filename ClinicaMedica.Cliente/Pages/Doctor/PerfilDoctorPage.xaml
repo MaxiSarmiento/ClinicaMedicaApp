@@ -17,13 +17,22 @@
                        HorizontalOptions="Center"
                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
 
-                <Entry x:Name="EntryNombre" Placeholder="Nombre"
+                <Entry x:Name="EntryNombre"
+                       Placeholder="Nombre"
                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
-                <Entry x:Name="EntryApellido" Placeholder="Apellido"
+
+                <Entry x:Name="EntryApellido"
+                       Placeholder="Apellido"
                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
-                <Entry x:Name="EntryDNI" Placeholder="DNI" Keyboard="Numeric"
+
+                <Entry x:Name="EntryDNI"
+                       Placeholder="DNI"
+                       Keyboard="Numeric"
                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
-                <Entry x:Name="EntryEmail" Placeholder="Email" Keyboard="Email"
+
+                <Entry x:Name="EntryEmail"
+                       Placeholder="Email"
+                       Keyboard="Email"
                        TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
 
                 <!-- Obras Sociales -->
@@ -41,14 +50,14 @@
                                         <SwipeItem Text="Eliminar"
                                                    BackgroundColor="{AppThemeBinding Light=#D32F2F, Dark=#B71C1C}"
                                                    CommandParameter="{Binding}"
-                                                   Invoked="OnEliminarOS"/>
+                                                   Invoked="OnEliminarOS" />
                                     </SwipeItems>
                                 </SwipeView.RightItems>
 
                                 <Grid Padding="10">
                                     <Label Text="{Binding Nombre}"
                                            FontSize="18"
-                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
                                 </Grid>
                             </SwipeView>
                         </DataTemplate>
@@ -76,14 +85,14 @@
                                         <SwipeItem Text="Eliminar"
                                                    BackgroundColor="{AppThemeBinding Light=#D32F2F, Dark=#B71C1C}"
                                                    CommandParameter="{Binding}"
-                                                   Invoked="OnEliminarEsp"/>
+                                                   Invoked="OnEliminarEsp" />
                                     </SwipeItems>
                                 </SwipeView.RightItems>
 
                                 <Grid Padding="10">
                                     <Label Text="{Binding Nombre}"
                                            FontSize="18"
-                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}" />
                                 </Grid>
                             </SwipeView>
                         </DataTemplate>
@@ -95,29 +104,35 @@
                         BackgroundColor="#4CAF50"
                         TextColor="White"
                         CornerRadius="10" />
-                <Label Text="Al agregar o eliminar obras sociales/especialidades, se guarda automáticamente. El botón Guardar Cambios es solo para tu nombre y apellido."
-       FontSize="12"
-       TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
 
+                <Label Text="Al agregar o eliminar obras sociales/especialidades, se guarda automáticamente. El botón Guardar Cambios es solo para tu nombre y apellido."
+                       FontSize="12"
+                       TextColor="{AppThemeBinding Light=#666, Dark=#AAA}" />
 
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Volver fijo abajo -->
-     
+        <!-- Botonera fija abajo -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="12"
+              Padding="16"
+              BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#121212}">
+
             <Button Grid.Column="0"
-            Text="Guardar Cambios"
-            Clicked="OnGuardar"
-            BackgroundColor="#009688"
-            TextColor="White"
-            CornerRadius="10" />
+                    Text="Guardar Cambios"
+                    Clicked="OnGuardar"
+                    BackgroundColor="#009688"
+                    TextColor="White"
+                    CornerRadius="10" />
 
             <Button Grid.Column="1"
-            Text="Volver"
-            Clicked="OnVolver"
-            BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
-            TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
-            CornerRadius="10" />
-    </Grid> 
-    
+                    Text="Volver"
+                    Clicked="OnVolver"
+                    BackgroundColor="{AppThemeBinding Light=#E0E0E0, Dark=#2C2C2C}"
+                    TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                    CornerRadius="10" />
+        </Grid>
+
+    </Grid>
 </ContentPage>

@@ -6,7 +6,7 @@
     Title="Editar Perfil"
     BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#121212}">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,*" RowSpacing="0">
 
         <!-- HEADER FIJO -->
         <Grid Padding="16"
@@ -23,7 +23,7 @@
                    Text="Editar Perfil"
                    FontSize="20"
                    FontAttributes="Bold"
-                   HorizontalOptions="End"
+                   HorizontalOptions="Center"
                    VerticalOptions="Center"
                    TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
         </Grid>
@@ -129,109 +129,100 @@
                         Clicked="OnGuardar"/>
 
                 <!-- CAMBIAR CONTRASEÑA -->
-                <!-- CAMBIAR CONTRASEÑA -->
                 <Frame Padding="12"
-       CornerRadius="12"
-       BorderColor="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
-       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                       CornerRadius="12"
+                       BorderColor="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                       BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
                     <VerticalStackLayout Spacing="10">
 
                         <Label Text="Cambiar contraseña"
-               FontAttributes="Bold"
-               FontSize="16"
-               TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                               FontAttributes="Bold"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
 
-                        <!-- Actual -->
                         <Label Text="Contraseña actual"
-               FontSize="12"
-               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
 
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                             <Entry x:Name="PasswordActualEntry"
-                   Grid.Column="0"
-                   Placeholder="Contraseña actual"
-                   IsPassword="True"
-                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
-                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
-                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
-
+                                   Grid.Column="0"
+                                   Placeholder="Contraseña actual"
+                                   IsPassword="True"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
                             <Button Grid.Column="1"
-                    Text="👁"
-                    Clicked="OnTogglePasswordActual"
-                    BackgroundColor="Transparent"
-                    Padding="0"
-                    WidthRequest="44"
-                    HeightRequest="44"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light=#0A68FF, Dark=#7FB0FF}" />
+                                    Text="👁"
+                                    Clicked="OnTogglePasswordActual"
+                                    BackgroundColor="Transparent"
+                                    Padding="0"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    FontSize="18"
+                                    TextColor="{AppThemeBinding Light=#0A68FF, Dark=#7FB0FF}" />
                         </Grid>
 
-                        <!-- Nueva -->
                         <Label Text="Nueva contraseña"
-               FontSize="12"
-               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
 
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                             <Entry x:Name="PasswordNuevaEntry"
-                   Grid.Column="0"
-                   Placeholder="Nueva contraseña"
-                   IsPassword="True"
-                   TextChanged="OnPasswordFieldsChanged"
-                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
-                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
-                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
-
+                                   Grid.Column="0"
+                                   Placeholder="Nueva contraseña"
+                                   IsPassword="True"
+                                   TextChanged="OnPasswordFieldsChanged"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
                             <Button Grid.Column="1"
-                    Text="👁"
-                    Clicked="OnTogglePasswordNueva"
-                    BackgroundColor="Transparent"
-                    Padding="0"
-                    WidthRequest="44"
-                    HeightRequest="44"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light=#0A68FF, Dark=#7FB0FF}" />
+                                    Text="👁"
+                                    Clicked="OnTogglePasswordNueva"
+                                    BackgroundColor="Transparent"
+                                    Padding="0"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    FontSize="18"
+                                    TextColor="{AppThemeBinding Light=#0A68FF, Dark=#7FB0FF}" />
                         </Grid>
 
-                        <!-- Repetir -->
                         <Label Text="Repetir nueva contraseña"
-               FontSize="12"
-               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#BBBBBB}"/>
 
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                             <Entry x:Name="PasswordRepetirEntry"
-                   Grid.Column="0"
-                   Placeholder="Repetir nueva contraseña"
-                   IsPassword="True"
-                   TextChanged="OnPasswordFieldsChanged"
-                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
-                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
-                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
-
+                                   Grid.Column="0"
+                                   Placeholder="Repetir nueva contraseña"
+                                   IsPassword="True"
+                                   TextChanged="OnPasswordFieldsChanged"
+                                   TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"
+                                   PlaceholderColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}"
+                                   BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"/>
                             <Button Grid.Column="1"
-                    Text="👁"
-                    Clicked="OnTogglePasswordRepetir"
-                    BackgroundColor="Transparent"
-                    Padding="0"
-                    WidthRequest="44"
-                    HeightRequest="44"
-                    FontSize="18"
-                    TextColor="{AppThemeBinding Light=#0A68FF, Dark=#7FB0FF}" />
+                                    Text="👁"
+                                    Clicked="OnTogglePasswordRepetir"
+                                    BackgroundColor="Transparent"
+                                    Padding="0"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    FontSize="18"
+                                    TextColor="{AppThemeBinding Light=#0A68FF, Dark=#7FB0FF}" />
                         </Grid>
 
-                        <!-- Mensaje validación -->
                         <Label x:Name="LblPasswordError"
-               IsVisible="False"
-               FontSize="12"
-               TextColor="{AppThemeBinding Light=#D32F2F, Dark=#FF6B6B}" />
+                               IsVisible="False"
+                               FontSize="12"
+                               TextColor="{AppThemeBinding Light=#D32F2F, Dark=#FF6B6B}" />
 
                         <Button Text="Actualizar contraseña"
-                Clicked="OnCambiarPassword"
-                BackgroundColor="{AppThemeBinding Light=#444444, Dark=#2A2A2A}"
-                TextColor="White"
-                CornerRadius="10"/>
+                                Clicked="OnCambiarPassword"
+                                BackgroundColor="{AppThemeBinding Light=#444444, Dark=#2A2A2A}"
+                                TextColor="White"
+                                CornerRadius="10"/>
                     </VerticalStackLayout>
                 </Frame>
-          
 
             </VerticalStackLayout>
         </ScrollView>
